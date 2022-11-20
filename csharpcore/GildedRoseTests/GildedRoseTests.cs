@@ -42,6 +42,18 @@ public class GildedRoseTests
     
     [Theory]
     [InlineData(20, 10, 19, 11)]
+    [InlineData(20, 50, 19, 50)] // The Quality of an item is never more than 50
+    [InlineData(9, 50, 8, 50)] // +2 but The Quality of an item is never more than 50
+    [InlineData(9, 49, 8, 50)] // +2 but The Quality of an item is never more than 50
+    [InlineData(11, 10, 10, 11)] // boundary case
+    [InlineData(10, 10, 9, 12)] // boundary case
+    [InlineData(3, 50, 2, 50)] // +3 but The Quality of an item is never more than 50
+    [InlineData(3, 49, 2, 50)] // +3 but The Quality of an item is never more than 50
+    [InlineData(3, 48, 2, 50)] // +3 but The Quality of an item is never more than 50
+    [InlineData(6, 10, 5, 12)] // boundary case
+    [InlineData(5, 10, 4, 13)] // boundary case
+    [InlineData(0, 48, -1, 0)] // Quality drops to 0 after the concert
+    [InlineData(1, 10, 0, 13)] // boundary case
     public void Backstage(int currentSellIn, int currentQuality, int expectedSellIn, int expectedQuality)
     {
         var inn = TestHelper.CreateAndUpdateQuality("Backstage passes to a TAFKAL80ETC concert", currentSellIn, currentQuality);
