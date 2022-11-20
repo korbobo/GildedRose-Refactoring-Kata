@@ -12,39 +12,42 @@ public class GildedRose
 
     public void UpdateQuality()
     {
-        for (var i = 0; i < Items.Count; i++)
-        {
-            var item = Items[i];
-
-            if (item.Name.Equals(SULFURAS)) { continue; }
-
-            var qualityAdjustment = -1;
-            var sellInAdjustment = -1;
-
-            var qualityIncreases = item.Name.Equals(AGED_BRIE) || item.Name.Equals(BACKSTAGE);
-
-            if (qualityIncreases)
-            {
-                qualityAdjustment = 1;
-
-                if (item.Name == BACKSTAGE)
-                {
-                    qualityAdjustment = item.SellIn < 6 ? 3 :
-                        item.SellIn < 11 ? 2 : qualityAdjustment;
-                }
-            }
-
-            if (item.SellIn <= 0)
-            {
-                qualityAdjustment = -2;
-                if (item.Name == BACKSTAGE) { qualityAdjustment = -item.Quality; }
-            }
-
-            UpdateItem(item, qualityAdjustment, sellInAdjustment);
-        }
+        foreach (var item in Items) { Updateitem(item); }
     }
 
-    private void UpdateItem(Item item, int qualityAdjustment, int sellInAdjustment)
+    private void Updateitem(Item item)
+    {
+        var noChangesRequired = item.Name.Equals(SULFURAS);
+        if (noChangesRequired) { return; }
+
+        var qualityAdjustment = -1;
+        var sellInAdjustment = -1;
+
+        var isBackStage = item.Name == BACKSTAGE;
+        
+        var qualityIncreases = item.Name.Equals(AGED_BRIE) || item.Name.Equals(BACKSTAGE);
+        if (qualityIncreases)
+        {
+            qualityAdjustment = 1;
+
+            if (isBackStage)
+            {
+                qualityAdjustment = item.SellIn < 6 ? 3 :
+                    item.SellIn < 11 ? 2 : qualityAdjustment;
+            }
+        }
+
+        var isExpired = item.SellIn <= 0;
+        if (isExpired)
+        {
+            qualityAdjustment = -2;
+            if (isBackStage) { qualityAdjustment = -item.Quality; }
+        }
+
+        ApplyFormula(item, qualityAdjustment, sellInAdjustment);
+    }
+
+    private void ApplyFormula(Item item, int qualityAdjustment, int sellInAdjustment)
     {
         var newQuality = item.Quality + qualityAdjustment;
         newQuality = newQuality < 0 ? 0 : newQuality;
