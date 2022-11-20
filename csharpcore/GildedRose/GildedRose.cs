@@ -20,54 +20,52 @@ public class GildedRose
 
             var baseQualityAdjustment = -1;
             var baseSellInAdjustment = -1;
+            var qualityAdjustment = baseQualityAdjustment;
+            var sellInAdjustment = baseSellInAdjustment;
 
             if (item.Name != AGED_BRIE &&
-                item.Name != BACKSTAGE)
-            {
-                if (item.Quality > 0) item.Quality = item.Quality - 1;
-            }
+                item.Name != BACKSTAGE) { }
             else
             {
+                qualityAdjustment = 1;
                 if (item.Quality < 50)
                 {
-                    item.Quality = item.Quality + 1;
+                    qualityAdjustment = 1;
 
                     if (item.Name == BACKSTAGE)
                     {
                         if (item.SellIn < 11)
                             if (item.Quality < 50)
-                                item.Quality = item.Quality + 1;
+                                qualityAdjustment = 2;
 
                         if (item.SellIn < 6)
                             if (item.Quality < 50)
-                                item.Quality = item.Quality + 1;
+                                qualityAdjustment = 3;
                     }
                 }
             }
 
-            item.SellIn = item.SellIn - 1;
-
-            if (item.SellIn < 0)
+            if (item.SellIn <= 0)
             {
+                qualityAdjustment = -2;
                 if (item.Name != AGED_BRIE)
                 {
-                    if (item.Name != BACKSTAGE)
-                    {
-                        if (item.Quality > 0) item.Quality = item.Quality - 1;
-                    }
-                    else { item.Quality = item.Quality - item.Quality; }
-                }
-                else
-                {
-                    if (item.Quality < 50) item.Quality = item.Quality + 1;
+                    if (item.Name != BACKSTAGE) { }
+                    else { qualityAdjustment = -item.Quality; }
                 }
             }
+
+            UpdateItem(item, qualityAdjustment, sellInAdjustment);
         }
     }
 
-    private void UpdateItem(Item item, int quantityAdjustment, int sellInAdjustment)
+    private void UpdateItem(Item item, int qualityAdjustment, int sellInAdjustment)
     {
-        item.Quality += quantityAdjustment;
+        var newQuality = item.Quality + qualityAdjustment;
+        newQuality = newQuality < 0 ? 0 : newQuality;
+        newQuality = newQuality > 50 ? 50 : newQuality;
+
+        item.Quality = newQuality;
         item.SellIn += sellInAdjustment;
     }
 }
