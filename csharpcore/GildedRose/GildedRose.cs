@@ -15,12 +15,16 @@ public class GildedRose
         for (var i = 0; i < Items.Count; i++)
         {
             var item = Items[i];
+
+            if (item.Name.Equals(SULFURAS)) { continue; }
+
+            var baseQualityAdjustment = -1;
+            var baseSellInAdjustment = -1;
+
             if (item.Name != AGED_BRIE &&
                 item.Name != BACKSTAGE)
             {
-                if (item.Quality > 0)
-                    if (item.Name != SULFURAS)
-                        item.Quality = item.Quality - 1;
+                if (item.Quality > 0) item.Quality = item.Quality - 1;
             }
             else
             {
@@ -41,7 +45,7 @@ public class GildedRose
                 }
             }
 
-            if (item.Name != SULFURAS) item.SellIn = item.SellIn - 1;
+            item.SellIn = item.SellIn - 1;
 
             if (item.SellIn < 0)
             {
@@ -49,9 +53,7 @@ public class GildedRose
                 {
                     if (item.Name != BACKSTAGE)
                     {
-                        if (item.Quality > 0)
-                            if (item.Name != SULFURAS)
-                                item.Quality = item.Quality - 1;
+                        if (item.Quality > 0) item.Quality = item.Quality - 1;
                     }
                     else { item.Quality = item.Quality - item.Quality; }
                 }
