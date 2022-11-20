@@ -18,41 +18,26 @@ public class GildedRose
 
             if (item.Name.Equals(SULFURAS)) { continue; }
 
-            var baseQualityAdjustment = -1;
-            var baseSellInAdjustment = -1;
-            var qualityAdjustment = baseQualityAdjustment;
-            var sellInAdjustment = baseSellInAdjustment;
+            var qualityAdjustment = -1;
+            var sellInAdjustment = -1;
 
-            if (item.Name != AGED_BRIE &&
-                item.Name != BACKSTAGE) { }
-            else
+            var qualityIncreases = item.Name.Equals(AGED_BRIE) || item.Name.Equals(BACKSTAGE);
+
+            if (qualityIncreases)
             {
                 qualityAdjustment = 1;
-                if (item.Quality < 50)
+
+                if (item.Name == BACKSTAGE)
                 {
-                    qualityAdjustment = 1;
-
-                    if (item.Name == BACKSTAGE)
-                    {
-                        if (item.SellIn < 11)
-                            if (item.Quality < 50)
-                                qualityAdjustment = 2;
-
-                        if (item.SellIn < 6)
-                            if (item.Quality < 50)
-                                qualityAdjustment = 3;
-                    }
+                    qualityAdjustment = item.SellIn < 6 ? 3 :
+                        item.SellIn < 11 ? 2 : qualityAdjustment;
                 }
             }
 
             if (item.SellIn <= 0)
             {
                 qualityAdjustment = -2;
-                if (item.Name != AGED_BRIE)
-                {
-                    if (item.Name != BACKSTAGE) { }
-                    else { qualityAdjustment = -item.Quality; }
-                }
+                if (item.Name == BACKSTAGE) { qualityAdjustment = -item.Quality; }
             }
 
             UpdateItem(item, qualityAdjustment, sellInAdjustment);
