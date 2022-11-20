@@ -6,7 +6,8 @@ namespace GildedRoseTests;
 public class GildedRoseTests
 {
     [Theory]
-    [InlineData(10, 10, 9, 11)]
+    [InlineData(10, 10, 9, 11)] // "Aged Brie" actually increases in Quality the older it gets
+    [InlineData(10, 50, 9, 50)] // The Quality of an item is never more than 50
     public void Brie(int currentSellIn, int currentQuality, int expectedSellIn, int expectedQuality)
     {
         var inn = TestHelper.CreateAndUpdateQuality("Aged Brie", currentSellIn, currentQuality);
@@ -29,6 +30,8 @@ public class GildedRoseTests
     
     [Theory]
     [InlineData(10, 80, 10, 80)]
+    //[InlineData(10, 10, 10, 10)] // however "Sulfuras" is a legendary item and as such its Quality is 80 and it never alters.
+    //[InlineData(10, 0, 10, 0)]  // however "Sulfuras" is a legendary item and as such its Quality is 80 and it never alters.
     public void Sulfuras(int currentSellIn, int currentQuality, int expectedSellIn, int expectedQuality)
     {
         var inn = TestHelper.CreateAndUpdateQuality("Sulfuras, Hand of Ragnaros", currentSellIn, currentQuality);
