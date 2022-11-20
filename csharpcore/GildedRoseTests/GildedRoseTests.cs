@@ -34,4 +34,14 @@ public class GildedRoseTests
         Assert.Equal(expectedSellIn, inn.Items.First().SellIn);
         Assert.Equal(expectedQuality, inn.Items.First().Quality);
     }
+    
+    [Theory]
+    [InlineData(20, 10, 19, 11)]
+    public void Backstage(int currentSellIn, int currentQuality, int expectedSellIn, int expectedQuality)
+    {
+        var inn = TestHelper.CreateAndUpdateQuality("Backstage passes to a TAFKAL80ETC concert", currentSellIn, currentQuality);
+
+        Assert.Equal(expectedSellIn, inn.Items.First().SellIn);
+        Assert.Equal(expectedQuality, inn.Items.First().Quality);
+    }
 }
