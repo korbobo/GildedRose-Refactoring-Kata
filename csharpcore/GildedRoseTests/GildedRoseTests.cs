@@ -24,4 +24,14 @@ public class GildedRoseTests
         Assert.Equal(expectedSellIn, inn.Items.First().SellIn);
         Assert.Equal(expectedQuality, inn.Items.First().Quality);
     }
+    
+    [Theory]
+    [InlineData(10, 80, 10, 80)]
+    public void Sulfuras(int currentSellIn, int currentQuality, int expectedSellIn, int expectedQuality)
+    {
+        var inn = TestHelper.CreateAndUpdateQuality("Sulfuras, Hand of Ragnaros", currentSellIn, currentQuality);
+
+        Assert.Equal(expectedSellIn, inn.Items.First().SellIn);
+        Assert.Equal(expectedQuality, inn.Items.First().Quality);
+    }
 }
