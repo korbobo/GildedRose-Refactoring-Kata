@@ -16,7 +16,9 @@ public class GildedRoseTests
     }
     
     [Theory]
-    [InlineData(10, 10, 9, 9)]
+    [InlineData(10, 10, 9, 9)] // At the end of each day our system lowers both values for every item
+    [InlineData(10, 0, 9, 0)] // The Quality of an item is never negative
+    [InlineData(0, 2, -1, 0)] // Once the sell by date has passed, Quality degrades twice as fast
     public void NormalProduct(int currentSellIn, int currentQuality, int expectedSellIn, int expectedQuality)
     {
         var inn = TestHelper.CreateAndUpdateQuality("Normal Product", currentSellIn, currentQuality);
