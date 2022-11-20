@@ -12,36 +12,34 @@ public class GildedRose
 
     public void UpdateQuality()
     {
-        foreach (var item in Items) { Updateitem(item); }
+        foreach (var item in Items) Updateitem(item);
     }
 
     private void Updateitem(Item item)
     {
         var noChangesRequired = item.Name.Equals(SULFURAS);
-        if (noChangesRequired) { return; }
+        if (noChangesRequired) return;
 
         var qualityAdjustment = -1;
         var sellInAdjustment = -1;
 
         var isBackStage = item.Name == BACKSTAGE;
-        
+
         var qualityIncreases = item.Name.Equals(AGED_BRIE) || item.Name.Equals(BACKSTAGE);
         if (qualityIncreases)
         {
             qualityAdjustment = 1;
 
             if (isBackStage)
-            {
                 qualityAdjustment = item.SellIn < 6 ? 3 :
                     item.SellIn < 11 ? 2 : qualityAdjustment;
-            }
         }
 
         var isExpired = item.SellIn <= 0;
         if (isExpired)
         {
             qualityAdjustment = -2;
-            if (isBackStage) { qualityAdjustment = -item.Quality; }
+            if (isBackStage) qualityAdjustment = -item.Quality;
         }
 
         ApplyFormula(item, qualityAdjustment, sellInAdjustment);
