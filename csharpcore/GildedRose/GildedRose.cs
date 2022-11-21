@@ -86,51 +86,22 @@ public class GildedRose
 
     private static void UpdateBackStage(Item item)
     {
-        if (item.Name != AGED_BRIE &&
-            item.Name != BACKSTAGE)
+        if (item.Quality < 50)
         {
-            if (item.Quality > 0)
-                if (item.Name != SULFURAS)
-                    item.Quality = item.Quality - 1;
-        }
-        else
-        {
-            if (item.Quality < 50)
-            {
+            item.Quality = item.Quality + 1;
+
+            if (item.SellIn < 11 &&
+                item.Quality < 50)
                 item.Quality = item.Quality + 1;
 
-                if (item.Name == BACKSTAGE)
-                {
-                    if (item.SellIn < 11)
-                        if (item.Quality < 50)
-                            item.Quality = item.Quality + 1;
-
-                    if (item.SellIn < 6)
-                        if (item.Quality < 50)
-                            item.Quality = item.Quality + 1;
-                }
-            }
+            if (item.SellIn < 6 &&
+                item.Quality < 50)
+                item.Quality = item.Quality + 1;
         }
 
-        if (item.Name != SULFURAS) item.SellIn = item.SellIn - 1;
+        item.SellIn = item.SellIn - 1;
 
-        if (item.SellIn < 0)
-        {
-            if (item.Name != AGED_BRIE)
-            {
-                if (item.Name != BACKSTAGE)
-                {
-                    if (item.Quality > 0)
-                        if (item.Name != SULFURAS)
-                            item.Quality = item.Quality - 1;
-                }
-                else { item.Quality = item.Quality - item.Quality; }
-            }
-            else
-            {
-                if (item.Quality < 50) item.Quality = item.Quality + 1;
-            }
-        }
+        if (item.SellIn < 0) { item.Quality = item.Quality - item.Quality; }
     }
 
     private static void UpdateNormalItem(Item item)
