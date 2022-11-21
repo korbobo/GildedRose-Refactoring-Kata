@@ -14,7 +14,7 @@ public class GildedRose
 
     public void UpdateQuality()
     {
-        foreach (var item in Items) { UpdateItem(item); }
+        foreach (var item in Items) UpdateItem(item);
     }
 
     private static void UpdateItem(Item item)
@@ -41,12 +41,13 @@ public class GildedRose
 
     private static void UpdateBrie(Item item)
     {
-        if (item.Quality < 50) { item.Quality = item.Quality + 1; }
+        if (item.Quality < 50) item.Quality = item.Quality + 1;
 
         item.SellIn = item.SellIn - 1;
 
         if (item.SellIn < 0 &&
-            item.Quality < 50) { item.Quality = item.Quality + 1; }
+            item.Quality < 50)
+            item.Quality = item.Quality + 1;
     }
 
     private static void UpdateBackStage(Item item)
@@ -66,7 +67,7 @@ public class GildedRose
 
         item.SellIn = item.SellIn - 1;
 
-        if (item.SellIn < 0) { item.Quality = item.Quality - item.Quality; }
+        if (item.SellIn < 0) item.Quality = item.Quality - item.Quality;
     }
 
     private static void UpdateNormalItem(Item item)

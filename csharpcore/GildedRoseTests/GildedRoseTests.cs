@@ -65,11 +65,11 @@ public class GildedRoseTests
         Assert.Equal(expectedSellIn, inn.Items.First().SellIn);
         Assert.Equal(expectedQuality, inn.Items.First().Quality);
     }
-    
+
     [Theory] // "Conjured" items degrade in Quality twice as fast as normal items
-    [InlineData(10, 10, 9, 8)] 
-    [InlineData(10, 0, 9, 0)] 
-    [InlineData(0, 4, -1, 0)] 
+    [InlineData(10, 10, 9, 8)]
+    [InlineData(10, 0, 9, 0)]
+    [InlineData(0, 4, -1, 0)]
     public void Conjured(int currentSellIn, int currentQuality, int expectedSellIn, int expectedQuality)
     {
         var inn = TestHelper.CreateAndUpdateQuality("Conjured", currentSellIn, currentQuality);
