@@ -15,7 +15,7 @@ public class GildedRoseTests
         Assert.Equal(expectedSellIn, inn.Items.First().SellIn);
         Assert.Equal(expectedQuality, inn.Items.First().Quality);
     }
-    
+
     [Theory]
     [InlineData(10, 10, 9, 9)] // At the end of each day our system lowers both values for every item
     [InlineData(10, 0, 9, 0)] // The Quality of an item is never negative
@@ -27,7 +27,7 @@ public class GildedRoseTests
         Assert.Equal(expectedSellIn, inn.Items.First().SellIn);
         Assert.Equal(expectedQuality, inn.Items.First().Quality);
     }
-    
+
     [Theory]
     [InlineData(10, 80, 10, 80)]
     //[InlineData(10, 10, 10, 10)] // however "Sulfuras" is a legendary item and as such its Quality is 80 and it never alters.
@@ -39,7 +39,7 @@ public class GildedRoseTests
         Assert.Equal(expectedSellIn, inn.Items.First().SellIn);
         Assert.Equal(expectedQuality, inn.Items.First().Quality);
     }
-    
+
     [Theory]
     [InlineData(20, 10, 19, 11)]
     [InlineData(20, 50, 19, 50)] // The Quality of an item is never more than 50
@@ -56,7 +56,23 @@ public class GildedRoseTests
     [InlineData(1, 10, 0, 13)] // boundary case
     public void Backstage(int currentSellIn, int currentQuality, int expectedSellIn, int expectedQuality)
     {
-        var inn = TestHelper.CreateAndUpdateQuality("Backstage passes to a TAFKAL80ETC concert", currentSellIn, currentQuality);
+        var inn = TestHelper.CreateAndUpdateQuality(
+            "Backstage passes to a TAFKAL80ETC concert",
+            currentSellIn,
+            currentQuality
+        );
+
+        Assert.Equal(expectedSellIn, inn.Items.First().SellIn);
+        Assert.Equal(expectedQuality, inn.Items.First().Quality);
+    }
+    
+    [Theory] // "Conjured" items degrade in Quality twice as fast as normal items
+    [InlineData(10, 10, 9, 8)] 
+    [InlineData(10, 0, 9, 0)] 
+    [InlineData(0, 4, -1, 0)] 
+    public void Conjured(int currentSellIn, int currentQuality, int expectedSellIn, int expectedQuality)
+    {
+        var inn = TestHelper.CreateAndUpdateQuality("Conjured", currentSellIn, currentQuality);
 
         Assert.Equal(expectedSellIn, inn.Items.First().SellIn);
         Assert.Equal(expectedQuality, inn.Items.First().Quality);
